@@ -1,0 +1,6 @@
+{
+    "Users": true,
+    "Customers": true,
+    "Shippings": true,
+    "Actors": true
+}

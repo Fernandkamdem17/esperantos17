@@ -1,0 +1,30 @@
+{
+    "name": "nwidart/shippings",
+    "description": "",
+    "authors": [
+        {
+            "name": "Nicolas Widart",
+            "email": "n.widart@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Shippings\\": "app/",
+            "Modules\\Shippings\\Database\\Factories\\": "database/factories/",
+            "Modules\\Shippings\\Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Modules\\Shippings\\Tests\\": "tests/"
+        }
+    }
+}

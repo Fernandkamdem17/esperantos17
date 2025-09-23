@@ -1,0 +1,11 @@
+{
+    "name": "Actors",
+    "alias": "actors",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Actors\\Providers\\ActorsServiceProvider"
+    ],
+    "files": []
+}
