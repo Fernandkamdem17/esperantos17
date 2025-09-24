@@ -11,18 +11,21 @@ return new class extends Migration
      */
     public function up(): void
     {
+
+        //Ajout des champs username, password, slug et deleted_at(softDeletes)
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
+            $table->string('username')->unique();
             $table->string('password');
+            $table->string('slug')->unique();
             $table->rememberToken();
             $table->timestamps();
+            $table->softDeletes();
         });
 
+        //Modification du système d'auth basé maintenant sur le username et nom l'email
         Schema::create('password_reset_tokens', function (Blueprint $table) {
-            $table->string('email')->primary();
+            $table->string('username')->primary();
             $table->string('token');
             $table->timestamp('created_at')->nullable();
         });
