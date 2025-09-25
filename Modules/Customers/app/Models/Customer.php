@@ -21,6 +21,7 @@ class Customer extends Model
         'name',
         'surname',
         'email',
+        'phone',
         'coordonnates_gps',
         'account_balance',
         'credit_limit',
