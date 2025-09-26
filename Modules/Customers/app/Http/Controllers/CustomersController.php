@@ -32,12 +32,15 @@ class CustomersController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+    //Cette fonction s'exécute aprés la fonction verify_code ci dessous
     public function store(Request $request)
     {
+        //Vérification du format du code envoyé par l'utilisateur
         $request->validate([
             'code' => 'required|numeric'
         ]);
 
+        //Une fois le bon format, stockage du contenu de la session('pending_user) dans la variable pending
         $pending = session('pending_user');
 
         if (!$pending) {
@@ -45,7 +48,7 @@ class CustomersController extends Controller
         }
 
         if ($request->code != $pending['verification_code']) {
-            return back()->with('error', 'Code incorrect.');
+            return back()->with('error', 'Code incorrect. Veuillez renvoyer le code exact');
         }
 
         // Création de l’utilisateur
@@ -77,7 +80,7 @@ class CustomersController extends Controller
         // Nettoyage session
         session()->forget('pending_user');
 
-        return redirect()->intended(route('customers.index'))->with('success', 'Inscription réussie !');
+        return redirect()->route('customers.index')->with('success', 'Inscription réussie !');
     }
 
 
@@ -109,6 +112,7 @@ class CustomersController extends Controller
 
     public function verify_code(Request $request)
     {
+        //Validation des données envoyées par le client 
         $validated = $request->validate([
             "username" => "required|string|min:2|max:100",
             "name" => "required|string|min:2|max:100",
@@ -121,22 +125,25 @@ class CustomersController extends Controller
             "password" => "required|string|confirmed"
         ]);
 
-        $verification_code = rand(100000, 999999); // Code à 6 chiffres
+        //Génération du code à envoyer à le client pour valisation d'email
+        $verification_code = rand(100000, 999999);
 
-        // Stockage temporaire
+        // Stockage temporaire des données validées et du code de vérification en attente de de la vérification
         session([
             'pending_user' => array_merge($validated, [
                 'verification_code' => $verification_code
             ])
         ]);
 
-        // Envoi du mail
+        // Envoi du mail contenant le code(Structure du mail dans app/mail/verificationCodeMail)
         Mail::to($validated['email'])->send(new VerificationCodeMail($verification_code));
 
-        return redirect()->route('customers.register.code')->with('success', 'Un code de vérification a été envoyé à votre adresse email.');
+        //Redirection
+        return redirect()->route('customers.register.code')->with('success', 'Veuilez saisir le code qui vous a été envoyé à votre adresse email.');
     }
 
 
+    //Fonction affichant le formulaire de saisie du code envoyé
     public function show_register_code_form()
     {
         return view('emails.register_code');
